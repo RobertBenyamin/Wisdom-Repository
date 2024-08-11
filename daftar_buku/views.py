@@ -184,21 +184,20 @@ def make_buku(request):
 
     counter = 0
 
-    with transaction.atomic():
-        for i in range(0, len(data['isbn13'])):
-            try:
-                if counter == 100:
-                    break
-                rating_obj = Rating(rating=buku['rating'][i])
-                rating_obj.save()
+    for i in range(0, len(data['isbn13'])):
+        try:
+            if counter == 100:
+                break
+            rating_obj = Rating(rating=buku['rating'][i])
+            rating_obj.save()
 
-                rating = Rating.objects.get(pk=rating_obj.pk)
-                buku_obj = Buku(isbn=buku['isbn'][i], judul=buku['judul'][i], penulis=buku['penulis'][i], tahun=buku['tahun'][i], kategori=buku['kategori'][i], gambar=buku['gambar'][i], deskripsi=buku['deskripsi'][i], rating=rating)
-                buku_obj.save()
-                counter += 1
-            except:
-                print("tesss")
-                pass
+            rating = Rating.objects.get(pk=rating_obj.pk)
+            buku_obj = Buku(isbn=buku['isbn'][i], judul=buku['judul'][i], penulis=buku['penulis'][i], tahun=buku['tahun'][i], kategori=buku['kategori'][i], gambar=buku['gambar'][i], deskripsi=buku['deskripsi'][i], rating=rating)
+            buku_obj.save()
+            counter += 1
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            pass
 
     return HttpResponseRedirect(reverse('daftar_buku:show_main'))
 
