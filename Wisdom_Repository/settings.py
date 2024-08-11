@@ -26,10 +26,6 @@ env = environ.Env()
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-g__fz&7&73gx_w@3rly*k5m9r^kgphsu5xv=0rtt+ifi_u@q@x'
 
-# Automatically determine environment by detecting if DATABASE_URL variable.
-# DATABASE_URL is provided by Heroku if a database add-on is added (e.g. Heroku Postgres).
-PRODUCTION = env.bool('PRODUCTION', False)
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -64,7 +60,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-CSRF_TRUSTED_ORIGINS = ["https://wisdom-repository-d11-tk.pbp.cs.ui.ac.id/", "https://wisdom-repository-d11-tk.pbp.cs.ui.ac.id/*"]
+CSRF_TRUSTED_ORIGINS = ["*"]
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_SECURE = True
@@ -95,21 +91,16 @@ WSGI_APPLICATION = 'Wisdom_Repository.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "postgres",
+        'USER': "postgres.ekwkbehwforsvmnkhjfx",
+        'PASSWORD': "N.98_UikG#6WaNx",
+        'HOST': "aws-0-ap-southeast-1.pooler.supabase.com",
+        'PORT': "6543",
     }
 }
-
-# Set database settings automatically using DATABASE_URL.
-if PRODUCTION:
-    DATABASES = {
-        'default': env.db('DATABASE_URL')
-    }
-    DATABASES["default"]["ATOMIC_REQUESTS"] = True
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
